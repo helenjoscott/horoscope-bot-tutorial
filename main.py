@@ -3,6 +3,9 @@ import os
 import requests
 from telebot import TeleBot
 
+STAR_SIGNS = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius",
+              "Capricorn", "Aquarius", "Pisces"]
+
 BOT_TOKEN = os.environ.get('BOT_TOKEN')
 bot = TeleBot(BOT_TOKEN)
 
@@ -29,22 +32,21 @@ def get_daily_horoscope(sign: str, day: str) -> dict:
 
 @bot.message_handler(commands=['horoscope'])
 def sign_handler(message):
-    user_input = "What's your zodiac sign?\nChoose one: *Aries*, *Taurus*, *Gemini*, *Cancer,* *Leo*, *Virgo*, *Libra*, *Scorpio*, *Sagittarius*, *Capricorn*, *Aquarius*, and *Pisces*."
+    user_input = f"What's your zodiac sign?\nChoose one: {STAR_SIGNS}."
     sent_msg = bot.send_message(message.chat.id, user_input, parse_mode="Markdown")
     bot.register_next_step_handler(sent_msg, day_handler)
 
 
 def day_handler(message):
-    star_signs = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius",
-                  "Capricorn", "Aquarius", "Pisces"]
-    text = "What day do you want to know?\nChoose one: *TODAY*, *TOMORROW*, *YESTERDAY*, or a date in format YYYY-MM-DD *up to a year ago*."
+    sign = message.text
+    text = "What day do you want to know?\nChoose one: *TODAY*, *TOMORROW*, *YESTERDAY*, or a date in format " \
+           "YYYY-MM-DD *up to a year ago*."
     sent_msg = bot.send_message(message.chat.id, text, parse_mode="Markdown")
-    bot.register_next_step_handler(sent_msg, fetch_horoscope, star_signs)
+    bot.register_next_step_handler(sent_msg, fetch_horoscope, STAR_SIGNS)
 
 
 def fetch_horoscope(message, sign):
     day = message.text
-    print(day)
     get_horoscope_data(day, message, sign)
 
 
@@ -72,4 +74,3 @@ def get_daily_horoscope(sign: str, day: str) -> dict:
 
 
 bot.infinity_polling()
-
