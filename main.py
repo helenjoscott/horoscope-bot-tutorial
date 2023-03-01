@@ -58,7 +58,6 @@ def fetch_horoscope(message, sign):
     # Validate if it's a day or a date
     valid_days = ["Today", "Tomorrow", "Yesterday"]
     if day in valid_days:
-        print("it's a day not a date")
         get_horoscope_data(day, message, sign)
 
     else:
@@ -67,21 +66,24 @@ def fetch_horoscope(message, sign):
             date_object = datetime.strptime(day, '%Y-%m-%d')
             # Validate if it's in the prior year
             now = str(datetime.now())
-            if day < now:
-                print("The date is in the past so this is GOOD")
-                earliest_valid_date = datetime.now() - timedelta(days=365)
-                # Validate if the date is in the future
-                if date_object >= earliest_valid_date:
-                    get_horoscope_data(day, message, sign)
-                else:
-                    date_too_old = "The date is too far in the past for my tiny brain, try again"
-                    bot.send_message(message.chat.id, date_too_old)
-            else:
-                not_valid = "Date is in the future, try again."
-                bot.send_message(message.chat.id, not_valid)
+            date_validation(date_object, day, message, now, sign)
         except ValueError:
             invalid_format = "Incorrect data format, should be YYYY-MM-DD"
             bot.send_message(message.chat.id, invalid_format)
+
+
+def date_validation(date_object, day, message, now, sign):
+    if day < now:
+        earliest_valid_date = datetime.now() - timedelta(days=365)
+        # Validate if the date is in the future
+        if date_object >= earliest_valid_date:
+            get_horoscope_data(day, message, sign)
+        else:
+            date_too_old = "The date is too far in the past for my tiny brain, try again"
+            bot.send_message(message.chat.id, date_too_old)
+    else:
+        not_valid = "Date is in the future, try again."
+        bot.send_message(message.chat.id, not_valid)
 
 
 def get_horoscope_data(day, message, sign):
