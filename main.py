@@ -53,8 +53,6 @@ def day_handler(message):
 
 def fetch_horoscope(message, sign):
     day = message.text.capitalize()
-    # get_horoscope_data(day, message, sign)
-
     # Validate if it's a day or a date
     valid_days = ["Today", "Tomorrow", "Yesterday"]
     if day in valid_days:
