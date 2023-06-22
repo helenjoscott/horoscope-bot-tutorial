@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import requests
 from telebot import TeleBot
 
+# Create a list of star signs
 STAR_SIGNS = ["Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius",
               "Capricorn", "Aquarius", "Pisces"]
 
