@@ -18,6 +18,7 @@ def send_welcome(message):
 
 
 def get_daily_horoscope(sign: str, day: str) -> dict:
+    # Making a change
     """Get daily horoscope for a zodiac sign.
     Keyword arguments:
     sign:str - Zodiac sign
